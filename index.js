@@ -64,15 +64,26 @@ app.get('/users/:id', async (req, res) => {
     // })
 });
 
-app.put('/users/:id/:age', async (req, res) => {
-    console.log(req.params);
-    const _id = req.params.id;
-    const age = req.params.age;
-    const result = await User.findByIdAndUpdate(_id, { age });
-    if (!result) {
-        return res.status(304).send("Failed")
+app.patch('/users/:id', async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowdUpdates = ['name', 'email', 'age', 'password'];
+    const isValidOperation = updates.every((update) => allowdUpdates.includes(update))
+
+    if (!isValidOperation) {
+        res.status(404).send('error:invalid update')
     }
-    res.send(result)
+
+    try {
+        const _id = req.params.id;
+        const result = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true });
+        if (!result) {
+            return res.status(404).send("Failed")
+        }
+        res.send(result)
+    } catch (err) {
+        res.status(500).send(err);
+    }
+
 })
 
 app.post('/tasks', async (req, res) => {
