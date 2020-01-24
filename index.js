@@ -84,7 +84,7 @@ app.patch('/users/:id', async (req, res) => {
         res.status(500).send(err);
     }
 
-})
+});
 
 app.post('/tasks', async (req, res) => {
 
@@ -102,6 +102,27 @@ app.post('/tasks', async (req, res) => {
     // }).catch((err) => {
     //     res.status(400).send(err)
     // });
-})
+});
+app.patch('/tasks/:id', async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowdUpdates = ['description', 'completed'];
+    const isValidOperation = updates.every((update) => allowdUpdates.includes(update))
+
+    if (!isValidOperation) {
+        res.status(404).send('error:invalid update')
+    }
+
+    try {
+        const _id = req.params.id;
+        const result = await Task.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true });
+        if (!result) {
+            return res.status(404).send("Failed")
+        }
+        res.send(result)
+    } catch (err) {
+        res.status(500).send(err);
+    }
+
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
