@@ -102,6 +102,24 @@ router.patch('/users/:id', async (req, res) => {
 
 });
 
+router.patch('/users/me', auth, async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowdUpdates = ['name', 'email', 'age', 'password'];
+    const isValidOperation = updates.every((update) => allowdUpdates.includes(update))
+    console.log(updates)
+    if (!isValidOperation) {
+        res.status(404).send('error:invalid update')
+    }
+
+    try {
+        updates.forEach(update => { req.user[update] = req.body[update] });
+        await req.user.save();
+        res.send(req.user)
+    } catch (err) {
+        // res.status(500).send(err);
+    }
+});
+
 router.delete('/users/me', auth, async (req, res) => {
     try {
         // const user = await User.findByIdAndDelete(req.user._id);
