@@ -1,0 +1,15 @@
+NPM used in Project
+--------------------
+npm multer ===> for file uploads
+npm mongoose,mongodb ==> middleware for connecting to monogoDB
+bcryptjs ==> for Hashing password
+jsonwebtoken ==> for Generating Token
+validator ==> for inbuild User validation functions
+nodemon ==> Continuos running of application
+express.json() ==> to Read Json data from Body
+Regular expression Generating==>Regular expression.com ==>
+Ex: myfile.doc==>filename
+    \doc$ ==> Regular expression
+    \.(doc|docx)$ ==> for Multiple Extensions
+sendGrid.com ==>sending emails
+env-cmd ==> for adding configration variables
