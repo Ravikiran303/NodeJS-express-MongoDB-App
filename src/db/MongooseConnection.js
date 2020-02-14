@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-
-mongoose.connect('mongodb://127.0.0.1:27017/my_database', {
+console.log(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: true
+    useFindAndModify: true,
 }).then((response, result) => {
     console.log("connection Success");
 }).catch(err => {
